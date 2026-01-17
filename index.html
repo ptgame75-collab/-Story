@@ -3,283 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adhiraj Story - Premium</title>
+    <title>Aadhiraj Story</title>
+    <link rel="manifest" href="manifest.json">
     <style>
         :root {
-            --bg-color: #f4f4f9;
-            --text-color: #333;
-            --card-bg: #ffffff;
-            --primary-color: #6c5ce7;
-            --accent-color: #a29bfe;
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --accent-color: #e63946;
+            --card-bg: #f8f9fa;
         }
 
         [data-theme="dark"] {
-            --bg-color: #1a1a2e;
+            --bg-color: #121212;
             --text-color: #e0e0e0;
-            --card-bg: #16213e;
-            --primary-color: #0f3460;
+            --card-bg: #1e1e1e;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            transition: all 0.3s ease;
+            transition: 0.3s;
+            overflow-x: hidden;
         }
 
-        /* 1. Splash Screen Animation */
+        /* 1. Splash Screen */
         #splash-screen {
             position: fixed;
             width: 100%;
             height: 100vh;
-            background: #1a1a2e;
+            background: #000;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 9999;
             color: white;
         }
 
-        .logo-anim {
-            font-size: 2.5rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-            animation: pulse 1.5s infinite;
-        }
-
-        .loader-bar {
-            width: 200px;
-            height: 4px;
-            background: #444;
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--accent-color);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
             margin-top: 20px;
-            position: relative;
-            overflow: hidden;
-            border-radius: 10px;
         }
 
-        .loader-fill {
-            width: 0%;
-            height: 100%;
-            background: var(--accent-color);
-            animation: load 2.5s forwards;
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
-        @keyframes load { 0% { width: 0%; } 100% { width: 100%; } }
-
-        /* 2. Premium Layout & Tabs */
-        .header {
+        /* Header & Controls */
+        header {
             padding: 20px;
-            text-align: center;
-            background: var(--card-bg);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .tab-container {
             display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
         }
 
-        .tab-btn {
-            padding: 10px 25px;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            background: var(--card-bg);
-            color: var(--text-color);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            font-weight: bold;
-        }
+        .controls { display: flex; gap: 10px; }
+        button { padding: 8px 12px; cursor: pointer; border-radius: 5px; border: none; background: var(--card-bg); color: var(--text-color); font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
-        .tab-btn.active {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        /* 3. Story Cards */
+        /* 8. Home Page Layout */
         .container { padding: 20px; max-width: 800px; margin: auto; }
+        .category-title { font-size: 24px; margin: 20px 0; border-left: 5px solid var(--accent-color); padding-left: 10px; }
+        
+        /* 4. Story Title List */
         .story-card {
             background: var(--card-bg);
             padding: 20px;
             margin-bottom: 15px;
             border-radius: 12px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: 0.3s;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
         .story-card:hover { transform: translateY(-5px); }
 
-        /* 4. Reading View & Fade Transition */
+        /* 4. Fade Transition for Story Content */
         #story-view {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-color);
-            z-index: 500;
+            z-index: 1000;
             overflow-y: auto;
-            padding: 30px;
-            box-sizing: border-box;
-            animation: fadeIn 0.5s ease-in-out;
+            padding: 30px 20px;
+            animation: fadeIn 0.5s ease;
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* 5. Tools (Pencil, Zoom, Theme) */
-        .controls {
-            position: fixed;
-            top: 20px; right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 600;
+        .content { font-size: 18px; line-height: 1.8; white-space: pre-line; }
+        
+        /* 7. Pencil System */
+        #canvas {
+            position: absolute;
+            top: 0; left: 0;
+            pointer-events: none;
         }
+        .pencil-active #canvas { pointer-events: auto; }
 
-        .icon-btn {
-            background: var(--card-bg);
-            border: none;
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            font-size: 1.2rem;
-        }
-
-        .bookmark-active { color: #ff4757; }
-
-        .content-area {
-            font-size: 18px;
-            line-height: 1.8;
-            margin-top: 60px;
-        }
-
-        .hidden { display: none; }
+        .back-btn { margin-bottom: 20px; background: var(--accent-color); color: white; }
+        .author { font-style: italic; color: var(--accent-color); margin-top: 20px; display: block; }
+        .message { font-weight: bold; text-align: center; margin: 30px 0; color: var(--accent-color); font-size: 20px; }
+        .thanks { text-align: center; opacity: 0.7; margin-bottom: 50px; }
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
-        <div class="logo-anim">Aadhiraj Story</div>
-        <div class="loader-bar"><div class="loader-fill"></div></div>
-        <p style="margin-top:10px; font-size: 0.8rem;">Loading magic...</p>
+        <h1 style="letter-spacing: 5px; animation: pulse 2s infinite;">AADHIRAJ STORY</h1>
+        <div class="loader"></div>
     </div>
 
-    <div id="app-content" class="hidden">
-        <div class="header">
-            <h2>अधिराजको डायरी</h2>
-            <div class="tab-container">
-                <button class="tab-btn active" onclick="showCat('nepali')">नेपाली</button>
-                <button class="tab-btn" onclick="showCat('hindi')">हिन्दी</button>
-            </div>
+    <header>
+        <h2 style="margin:0;">Aadhiraj App</h2>
+        <div class="controls">
+            <button onclick="toggleTheme()">🌙 Mode</button>
+            <button onclick="changeFontSize(1)">A+</button>
+            <button onclick="changeFontSize(-1)">A-</button>
+        </div>
+    </header>
+
+    <div class="container" id="home-page">
+        <div class="category-title">हिन्दी कहानियाँ</div>
+        <div class="story-card" onclick="openStory('hindi')">
+            <h3>बियोग का सिन्दुर</h3>
         </div>
 
-        <div class="container" id="story-list">
-            </div>
+        <div class="category-title">नेपाली कथाहरू</div>
+        <div class="story-card" onclick="openStory('nepali')">
+            <h3>वैवाहिक वेश्या</h3>
+        </div>
     </div>
 
     <div id="story-view">
-        <div class="controls">
-            <button class="icon-btn" onclick="changeFontSize(1)">A+</button>
-            <button class="icon-btn" onclick="changeFontSize(-1)">A-</button>
-            <button class="icon-btn" onclick="toggleTheme()">🌓</button>
-            <button id="pencil-icon" class="icon-btn" onclick="toggleBookmark()">✏️</button>
-            <button class="icon-btn" onclick="closeStory()">✖</button>
-        </div>
-        <h1 id="view-title"></h1>
-        <hr>
-        <div id="view-content" class="content-area"></div>
+        <button class="back-btn" onclick="closeStory()">← Back</button>
+        <button id="pencil-btn" onclick="togglePencil()">✏️ Pencil</button>
+        <canvas id="canvas"></canvas>
+        <div id="full-story-content" class="content"></div>
     </div>
 
     <script>
-        // Data Structure
-        const stories = {
-            nepali: [
-                { id: 1, title: "हराएको गाउँ", content: "यो एउटा पुरानो गाउँको कथा हो जहाँ मानिसहरू..." },
-                { id: 2, title: "समयको यात्रा", content: "धेरै समय पहिले एक जना वैज्ञानिकले..." }
-            ],
-            hindi: [
-                { id: 3, title: "पुरानी हवेली", content: "एक समय की बात है, शहर के किनारे एक पुरानी..." },
-                { id: 4, title: "सच्चा मित्र", content: "राम और श्याम दो बहुत अच्छे दोस्त थे..." }
-            ]
-        };
-
-        let currentFontSize = 18;
-        let activeStoryId = null;
-
-        // 1. Splash Screen Logic
+        // 1. Hide Splash Screen after 3 seconds
         setTimeout(() => {
             document.getElementById('splash-screen').style.display = 'none';
-            document.getElementById('app-content').classList.remove('hidden');
-            showCat('nepali');
-        }, 2500);
+        }, 3000);
 
-        // 2. Tab Logic
-        function showCat(lang) {
-            const list = document.getElementById('story-list');
-            list.innerHTML = '';
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event?.target.classList.add('active');
-
-            stories[lang].forEach(s => {
-                const card = document.createElement('div');
-                card.className = 'story-card';
-                card.innerHTML = `<span>${s.title}</span> <span>➔</span>`;
-                card.onclick = () => openStory(s);
-                list.appendChild(card);
-            });
+        // 5. Day/Night Mode
+        function toggleTheme() {
+            const body = document.body;
+            const theme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', theme);
         }
 
-        // 4. Open Story with Fade
-        function openStory(story) {
-            activeStoryId = story.id;
-            document.getElementById('view-title').innerText = story.title;
-            document.getElementById('view-content').innerText = story.content;
-            document.getElementById('story-view').style.display = 'block';
-            
-            // Check bookmark
-            if(localStorage.getItem('bookmark_' + activeStoryId)) {
-                document.getElementById('pencil-icon').classList.add('bookmark-active');
-            } else {
-                document.getElementById('pencil-icon').classList.remove('bookmark-active');
+        // 6. Font Resizer
+        let currentSize = 18;
+        function changeFontSize(delta) {
+            currentSize += delta;
+            document.getElementById('full-story-content').style.fontSize = currentSize + 'px';
+        }
+
+        const stories = {
+            hindi: {
+                title: "बियोग का सिन्दुर",
+                content: `बनारस के पास एक छोटा सा गाँव था... (पूरा कथा यहाँ समावेश छ) ...उसकी मुट्ठी में माधव की वर्दी का एक हिस्सा दबा हुआ था।`,
+                message: "प्रेम की प्रतीक्षा",
+                author: "अधिराज सुनार"
+            },
+            nepali: {
+                title: "वैवाहिक वेश्या",
+                content: `गाउँको चौतारीमा एउटा समूह गफिँदै थियो... (पूरा कथा यहाँ समावेश छ) ...यो समाजले केवल लाशहरूलाई सम्मान करना जान्दछ, जिउँदो आत्मालाई होइन।`,
+                message: "सिन्दुर को चिहान",
+                author: "अधिराज सुनार"
             }
+        };
+
+        function openStory(id) {
+            const story = stories[id];
+            const view = document.getElementById('story-view');
+            const content = document.getElementById('full-story-content');
+            
+            content.innerHTML = `
+                <h1>${story.title}</h1>
+                <p>${story.content}</p>
+                <div class="message">${story.message}</div>
+                <span class="author">लेखक: ${story.author}</span>
+                <p class="thanks">Thanks For Reading</p>
+            `;
+            
+            view.style.display = 'block';
+            setupCanvas();
         }
 
         function closeStory() {
             document.getElementById('story-view').style.display = 'none';
         }
 
-        // 5. Theme Toggle
-        function toggleTheme() {
-            const body = document.body;
-            const current = body.getAttribute('data-theme');
-            body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
-        }
-
-        // 6. Font Scaling
-        function changeFontSize(delta) {
-            currentFontSize += delta;
-            document.getElementById('view-content').style.fontSize = currentFontSize + 'px';
-        }
-
-        // 7. Bookmark (Pencil Icon)
-        function toggleBookmark() {
-            const key = 'bookmark_' + activeStoryId;
-            const icon = document.getElementById('pencil-icon');
-            
-            if(localStorage.getItem(key)) {
-                localStorage.removeItem(key);
-                icon.classList.remove('bookmark-active');
-                alert("Bookmark हटाइयो!");
-            } else {
-                localStorage.setItem(key, "saved");
-                icon.classList.add('bookmark-active');
-                alert("पढ्ने ठाउँ सेभ गरियो!");
+        // 7. Pencil System Logic
+        function togglePencil() {
+            document.body.classList.toggle('pencil-active');
+            const btn = document.getElementById('pencil-btn');
+            btn.innerText = document.body.classList.contains('pencil-active') ? "❌ Clear/Back" : "✏️ Pencil";
+            if(!document.body.classList.contains('pencil-active')) {
+                const ctx = document.getElementById('canvas').getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
             }
+        }
+
+        function setupCanvas() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = document.getElementById('full-story-content').scrollHeight + 200;
+            
+            let painting = false;
+            function startPosition(e) { painting = true; draw(e); }
+            function finishedPosition() { painting = false; ctx.beginPath(); }
+            function draw(e) {
+                if (!painting) return;
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = 'red';
+                const x = e.clientX || e.touches[0].clientX;
+                const y = (e.clientY || e.touches[0].clientY) + window.scrollY;
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+            }
+            canvas.addEventListener('mousedown', startPosition);
+            canvas.addEventListener('mouseup', finishedPosition);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('touchstart', startPosition);
+            canvas.addEventListener('touchend', finishedPosition);
+            canvas.addEventListener('touchmove', draw);
         }
     </script>
 </body>
