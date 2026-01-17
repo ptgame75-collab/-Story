@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aadhiraj Story</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#000000">
+</head>
+<body>
+
+    <div id="splash-screen">
+        <h1 class="zoom-text">Aadhiraj Story</h1>
+        <div class="loader-container">
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+
+    <div id="app-content" class="hidden">
+        <nav class="top-nav">
+            <div class="nav-left">📖 अधिराज Story</div>
+            <button onclick="toggleNightMode()" id="theme-btn">🌙</button>
+        </nav>
+
+        <header class="hero">
+            <h1>COLLECTION 2026</h1>
+            <p>Stories Worth Reading</p>
+        </header>
+
+        <div class="tab-bar">
+            <div class="tab" onclick="switchLang('nepali', 0)">नेपाली</div>
+            <div class="tab" onclick="switchLang('hindi', 50)">हिन्दी</div>
+            <div id="tab-underline" class="underline"></div>
+        </div>
+
+        <div class="controls">
+            <button onclick="changeFontSize(-2)">A-</button>
+            <button onclick="changeFontSize(2)">A+</button>
+        </div>
+
+        <main id="story-container"></main>
+    </div>
+
+    <script src="stories.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
