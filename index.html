@@ -4,46 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aadhiraj Story</title>
-    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
-    <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div id="splash-screen">
-        <h1 class="zoom-text">Aadhiraj Story</h1>
-        <div class="loader-container">
-            <div class="loader-bar"></div>
+    <div id="loading-screen">
+        <div class="loader-content">
+            <h1>Aadhiraj Story</h1>
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
         </div>
     </div>
 
-    <div id="app-content" class="hidden">
-        <nav class="top-nav">
-            <div class="nav-left">📖 अधिराज Story</div>
-            <button onclick="toggleNightMode()" id="theme-btn">🌙</button>
-        </nav>
-
-        <header class="hero">
-            <h1>COLLECTION 2026</h1>
-            <p>Stories Worth Reading</p>
+    <div id="app" class="hidden">
+        <header>
+            <div class="controls">
+                <button id="theme-toggle">🌓</button>
+                <div class="font-controls">
+                    <button onclick="changeFontSize(-2)">-A</button>
+                    <button onclick="changeFontSize(2)">+A</button>
+                </div>
+            </div>
+            
+            <div class="language-tabs">
+                <button id="btn-ne" class="active" onclick="switchLanguage('ne')">नेपाली</button>
+                <button id="btn-hi" onclick="switchLanguage('hi')">हिन्दी</button>
+            </div>
         </header>
 
-        <div class="tab-bar">
-            <div class="tab" onclick="switchLang('nepali', 0)">नेपाली</div>
-            <div class="tab" onclick="switchLang('hindi', 50)">हिन्दी</div>
-            <div id="tab-underline" class="underline"></div>
-        </div>
+        <main id="story-grid">
+            </main>
 
-        <div class="controls">
-            <button onclick="changeFontSize(-2)">A-</button>
-            <button onclick="changeFontSize(2)">A+</button>
-        </div>
+        <button id="install-button" class="hidden">Install App</button>
+    </div>
 
-        <main id="story-container"></main>
+    <div id="story-reader" class="hidden">
+        <button class="back-btn" onclick="closeStory()">← पछाडि</button>
+        <article id="reader-content">
+            <h1 id="story-title"></h1>
+            <div id="story-text"></div>
+            
+            <footer class="story-footer">
+                <p class="author-name">लेखक: अधिराज सुनार</p>
+                <p class="short-msg">शुभ पठन</p>
+                <p class="thanks-msg">♡︎ Thanks For Reading ♡︎</p>
+            </footer>
+        </article>
     </div>
 
     <script src="stories.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
-
