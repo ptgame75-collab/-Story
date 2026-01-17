@@ -4,228 +4,243 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>अधिराज की डायरी 068</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Mukta:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #2d3436;
-            --accent: #d63031;
-            --bg: #f9f7f2;
-            --card-bg: #ffffff;
-            --text: #2d2d2d;
-            --glass: rgba(255, 255, 255, 0.8);
+            --bg: #f0f2f5;
+            --surface: #ffffff;
+            --primary: #6366f1;
+            --accent: #f43f5e;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --glass: rgba(255, 255, 255, 0.7);
         }
 
         [data-theme="dark"] {
-            --primary: #dfe6e9;
-            --accent: #ff7675;
-            --bg: #1e1e1e;
-            --card-bg: #2d2d2d;
-            --text: #f5f5f5;
-            --glass: rgba(45, 45, 45, 0.8);
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --primary: #818cf8;
+            --accent: #fb7185;
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --glass: rgba(30, 41, 59, 0.7);
         }
 
-        * { box-sizing: border-box; transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg); margin: 0; font-family: 'Poppins', 'Georgia', serif; color: var(--text); overflow-x: hidden; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; font-family: 'Outfit', 'Mukta', sans-serif; background: var(--bg); color: var(--text-main); transition: 0.4s; }
 
-        /* 1. Loading Splash Screen */
+        /* Splash Screen */
         #splash {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #2d3436; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999;
+            position: fixed; inset: 0; background: #0f172a; z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-        .loader-text { color: white; font-size: 24px; font-weight: bold; letter-spacing: 2px; margin-bottom: 20px; animation: pulse 1.5s infinite; }
-        .progress-bar { width: 200px; height: 4px; background: #555; border-radius: 10px; overflow: hidden; }
-        .progress-fill { width: 0%; height: 100%; background: var(--accent); animation: load 2.5s forwards; }
+        .splash-title { color: white; font-size: 2.5rem; font-weight: 700; letter-spacing: -1px; animation: glow 2s infinite; }
+        @keyframes glow { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.95); } }
 
-        @keyframes load { to { width: 100%; } }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-
-        /* 2. Premium Header & Controls */
-        header { 
-            padding: 15px 20px; background: var(--glass); backdrop-filter: blur(10px);
+        /* Modern Header */
+        header {
+            padding: 20px; position: sticky; top: 0; z-index: 100;
+            background: var(--glass); backdrop-filter: blur(15px);
             display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        .controls { display: flex; gap: 15px; align-items: center; }
-        .icon-btn { cursor: pointer; font-size: 20px; background: none; border: none; color: var(--text); }
+        .brand { font-size: 1.4rem; font-weight: 700; background: linear-gradient(90deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* 3. Tab Navigation */
-        .tab-nav { display: flex; background: var(--card-bg); margin: 15px; border-radius: 15px; padding: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .tab-nav div { flex: 1; text-align: center; padding: 12px; cursor: pointer; border-radius: 12px; font-weight: 600; color: #888; }
-        .tab-nav div.active { background: var(--accent); color: white; box-shadow: 0 4px 10px rgba(214, 48, 49, 0.3); }
+        /* Tab Bar - App Like */
+        .tab-bar {
+            display: flex; margin: 20px; background: var(--surface); border-radius: 16px;
+            padding: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .tab-item {
+            flex: 1; padding: 12px; text-align: center; border-radius: 12px;
+            font-weight: 600; cursor: pointer; color: var(--text-sub);
+        }
+        .tab-item.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
 
-        /* 4. Content Wrapper */
-        .main-wrapper { display: flex; width: 200vw; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        section { width: 100vw; padding: 10px 20px; }
+        /* Content Area */
+        .content-slider { display: flex; width: 200vw; transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
+        .page { width: 100vw; padding: 0 20px 100px; }
 
-        /* 5. Story Card - Premium View */
+        /* Premium Card */
         .story-card {
-            background: var(--card-bg); border-radius: 20px; padding: 20px;
-            margin-bottom: 25px; position: relative; border: 1px solid rgba(0,0,0,0.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); overflow: hidden;
+            background: var(--surface); border-radius: 24px; padding: 25px;
+            margin-bottom: 25px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border: 1px solid rgba(255,255,255,0.05); transform: translateY(0); transition: 0.3s;
         }
-        .story-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .story-title { font-size: 22px; font-weight: 700; margin: 0; cursor: pointer; }
+        .story-card:active { transform: scale(0.98); }
         
-        /* 6. Bookmark Pencil */
-        .bookmark-btn { font-size: 22px; cursor: pointer; color: #ccc; z-index: 10; padding: 5px; }
-        .bookmark-btn.active { color: #2ecc71; transform: scale(1.2) rotate(-15deg); }
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .title { font-size: 1.5rem; font-weight: 700; margin: 0; line-height: 1.3; color: var(--text-main); }
+        
+        /* Interactive Pencil Bookmark */
+        .bookmark-group { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .pencil-btn { 
+            width: 45px; height: 45px; background: var(--bg); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; cursor: pointer;
+            font-size: 20px; transition: 0.3s; border: 2px solid transparent;
+        }
+        .pencil-btn.active { border-color: var(--primary); color: var(--primary); background: rgba(99, 102, 241, 0.1); }
+        .clear-mark { font-size: 10px; font-weight: 700; color: var(--accent); cursor: pointer; display: none; text-transform: uppercase; }
+        .pencil-btn.active + .clear-mark { display: block; }
 
-        /* 7. Full Content & Transitions */
-        .full-content { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #ddd; opacity: 0; transform: translateY(20px); }
-        .full-content.show { display: block; animation: fadeInUp 0.5s forwards; }
+        /* Expanded Content */
+        .expanded-story {
+            display: none; padding-top: 25px; margin-top: 20px;
+            border-top: 1px solid rgba(0,0,0,0.05); animation: fadeIn 0.8s ease forwards;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .body-text { font-size: 18px; line-height: 2; color: var(--text-main); white-space: pre-line; text-align: justify; }
 
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        /* Floating Menu */
+        .floating-menu {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: var(--surface); padding: 12px 25px; border-radius: 50px;
+            display: flex; gap: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 1000; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .tool-icon { font-size: 20px; cursor: pointer; background: none; border: none; color: var(--text-main); }
 
-        .story-text { font-size: 18px; line-height: 1.8; text-align: justify; white-space: pre-line; }
-        .quote-box { background: rgba(214, 48, 49, 0.05); border-left: 4px solid var(--accent); padding: 15px; margin: 20px 0; font-style: italic; }
-
-        .read-btn { 
-            background: var(--primary); color: white; border: none; padding: 12px 25px; 
-            border-radius: 12px; width: 100%; margin-top: 15px; font-weight: 600; cursor: pointer;
+        .btn-main {
+            width: 100%; padding: 15px; border-radius: 16px; border: none;
+            background: var(--primary); color: white; font-weight: 700;
+            font-size: 1rem; cursor: pointer; margin-top: 15px;
         }
     </style>
 </head>
-<body>
+<body data-theme="light">
 
     <div id="splash">
-        <div class="loader-text">AADHIRAJ STORY</div>
-        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="splash-title">AADHIRAJ</div>
+        <div style="color: #64748b; margin-top: 10px; font-weight: 500;">Story Diary 068</div>
     </div>
 
     <header>
-        <div class="logo-text">🅰️ 068</div>
-        <div class="controls">
-            <button class="icon-btn" onclick="toggleTheme()" id="themeIcon">🌙</button>
-            <div style="display:flex; gap:5px;">
-                <button class="icon-btn" onclick="changeFontSize(1.5)">A+</button>
-                <button class="icon-btn" onclick="changeFontSize(-1.5)">A-</button>
-            </div>
-        </div>
+        <div class="brand">AD 068</div>
+        <div id="current-tab-label" style="font-weight: 600; font-size: 0.9rem; color: var(--text-sub);">हिन्दी कहानियाँ</div>
     </header>
 
-    <nav class="tab-nav">
-        <div id="tab0" class="active" onclick="showPage(0)">Hindi</div>
-        <div id="tab1" onclick="showPage(1)">Nepali</div>
-    </nav>
+    <div class="tab-bar">
+        <div class="tab-item active" onclick="moveSlide(0, 'हिन्दी कहानियाँ')">हिन्दी</div>
+        <div class="tab-item" onclick="moveSlide(1, 'नेपाली कथाहरू')">नेपाली</div>
+    </div>
 
-    <div class="main-wrapper" id="slider">
-        
-        <section>
+    <div class="content-slider" id="slider">
+        <section class="page">
             <div class="story-card" data-id="h1">
-                <div class="story-header">
-                    <h2 class="story-title" onclick="toggleStory('c-h1', 'b-h1')">स्वार्थी भाई</h2>
-                    <span class="bookmark-btn" onclick="toggleBookmark(this, 'h1')">✎</span>
-                </div>
-                <button class="read-btn" id="b-h1" onclick="toggleStory('c-h1', 'b-h1')">Open Story</button>
-                <div id="c-h1" class="full-content">
-                    <div class="story-text">
-                        बहुत साल पहले की बात है, एक छोटे से गाँव में विजय और अजय नाम के दो भाई रहते थे। विजय बड़ा था और अजय छोटा। उनके माता-पिता की एक सड़क दुर्घटना में मौत हो गई थी, जिसके बाद दस साल के विजय के कंधों पर पाँच साल के भाई को पालने की जिम्मेदारी आ गई...
-                        (तपाईँको पूर्ण कथा यहाँ रहनेछ)
+                <div class="card-top">
+                    <h2 class="title">स्वार्थी भाई</h2>
+                    <div class="bookmark-group">
+                        <div class="pencil-btn" onclick="setMark('h1')">✎</div>
+                        <div class="clear-mark" onclick="clearMark('h1')">मेटाउने</div>
                     </div>
-                    <div class="quote-box">"बाबू अजय... तुम्हारी इज्जत अब सुरक्षित है, अब यह 'गंदा भाई' तुम्हारे घर कभी नहीं आएगा।"</div>
+                </div>
+                <button class="btn-main" onclick="openStory('h1')">कथा खोल्नुहोस्</button>
+                <div class="expanded-story" id="exp-h1">
+                    <div class="body-text" id="text-h1">
+                        बहुत साल पहले की बात है... (तपाईँको पूर्ण कथा यहाँ)
+                    </div>
                 </div>
             </div>
+            </section>
 
-            <div class="story-card" data-id="h2">
-                <div class="story-header">
-                    <h2 class="story-title" onclick="toggleStory('c-h2', 'b-h2')">पत्थर का दिल</h2>
-                    <span class="bookmark-btn" onclick="toggleBookmark(this, 'h2')">✎</span>
-                </div>
-                <button class="read-btn" id="b-h2" onclick="toggleStory('c-h2', 'b-h2')">Open Story</button>
-                <div id="c-h2" class="full-content">
-                    <div class="story-text">गंगापुर एक छोटा-सा शांत गाँव था... (तपाईँको पूर्ण कथा यहाँ)</div>
-                </div>
-            </div>
-        </section>
-
-        <section>
+        <section class="page">
             <div class="story-card" data-id="n1">
-                <div class="story-header">
-                    <h2 class="story-title" onclick="toggleStory('c-n1', 'b-n1')">दिदीको समर्पण</h2>
-                    <span class="bookmark-btn" onclick="toggleBookmark(this, 'n1')">✎</span>
+                <div class="card-top">
+                    <h2 class="title">दिदीको समर्पण</h2>
+                    <div class="bookmark-group">
+                        <div class="pencil-btn" onclick="setMark('n1')">✎</div>
+                        <div class="clear-mark" onclick="clearMark('n1')">मेटाउने</div>
+                    </div>
                 </div>
-                <button class="read-btn" id="b-n1" onclick="toggleStory('c-n1', 'b-n1')">Open Story</button>
-                <div id="c-n1" class="full-content">
-                    <div class="story-text">पहाडको काखमा एउटा सानो गाउँ थियो... (तपाईँको पूर्ण कथा यहाँ)</div>
+                <button class="btn-main" onclick="openStory('n1')">पूरा पढ्नुहोस्</button>
+                <div class="expanded-story" id="exp-n1">
+                    <div class="body-text" id="text-n1">
+                        पहाडको काखमा एउटा सानो गाउँ थियो... (तपाईँको पूर्ण कथा यहाँ)
+                    </div>
                 </div>
             </div>
         </section>
     </div>
 
+    <div class="floating-menu">
+        <button class="tool-icon" onclick="toggleTheme()">🌓</button>
+        <button class="tool-icon" onclick="changeSize(2)">A+</button>
+        <button class="tool-icon" onclick="changeSize(-2)">A-</button>
+        <button class="tool-icon" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">顶部</button>
+    </div>
+
     <script>
-        // 1. Splash Screen Logic
+        // Splash logic
         window.addEventListener('load', () => {
             setTimeout(() => {
-                document.getElementById('splash').style.opacity = '0';
-                setTimeout(() => document.getElementById('splash').remove(), 500);
-            }, 2500);
+                const splash = document.getElementById('splash');
+                splash.style.transition = '0.8s';
+                splash.style.opacity = '0';
+                setTimeout(() => splash.remove(), 800);
+            }, 2200);
+            loadSavedMarks();
         });
 
-        // 2. Tab Navigation with Slide
-        function showPage(index) {
-            document.getElementById('slider').style.transform = `translateX(-${index * 100}vw)`;
-            document.querySelectorAll('.tab-nav div').forEach((tab, i) => {
-                tab.classList.toggle('active', i === index);
-            });
+        // Navigation
+        function moveSlide(idx, label) {
+            document.getElementById('slider').style.transform = `translateX(-${idx * 100}vw)`;
+            document.getElementById('current-tab-label').innerText = label;
+            const tabs = document.querySelectorAll('.tab-item');
+            tabs.forEach((t, i) => t.classList.toggle('active', i === idx));
         }
 
-        // 3. Story Toggle with Fade Animation
-        function toggleStory(contentId, btnId) {
-            const content = document.getElementById(contentId);
-            const btn = document.getElementById(btnId);
-            
-            if (content.classList.contains('show')) {
-                content.classList.remove('show');
-                btn.innerText = "Open Story";
-            } else {
-                content.classList.add('show');
-                btn.innerText = "Close Story";
-            }
+        // Open Story with Fade
+        function openStory(id) {
+            const detail = document.getElementById('exp-' + id);
+            const isVisible = detail.style.display === 'block';
+            detail.style.display = isVisible ? 'none' : 'block';
+            if(!isVisible) detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // 4. Night Mode Logic
+        // Theme Toggle
         function toggleTheme() {
             const body = document.body;
-            const theme = body.getAttribute('data-theme');
-            if (theme === 'dark') {
-                body.removeAttribute('data-theme');
-                document.getElementById('themeIcon').innerText = '🌙';
-            } else {
-                body.setAttribute('data-theme', 'dark');
-                document.getElementById('themeIcon').innerText = '☀️';
-            }
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            body.setAttribute('data-theme', isDark ? 'light' : 'dark');
         }
 
-        // 5. Font Resizer
-        function changeFontSize(delta) {
-            const texts = document.querySelectorAll('.story-text');
-            texts.forEach(text => {
-                const currentSize = window.getComputedStyle(text).fontSize;
-                text.style.fontSize = (parseFloat(currentSize) + delta) + 'px';
+        // Font Resize
+        function changeSize(delta) {
+            const texts = document.querySelectorAll('.body-text');
+            texts.forEach(t => {
+                const currentSize = window.getComputedStyle(t).fontSize;
+                t.style.fontSize = (parseFloat(currentSize) + delta) + 'px';
             });
         }
 
-        // 6. Bookmark (Pencil) Logic - Saves to Device
-        function toggleBookmark(element, storyId) {
-            element.classList.toggle('active');
-            let marks = JSON.parse(localStorage.getItem('adhiraj_marks')) || {};
-            
-            if (element.classList.contains('active')) {
-                marks[storyId] = true;
-            } else {
-                delete marks[storyId];
-            }
-            localStorage.setItem('adhiraj_marks', JSON.stringify(marks));
+        // Bookmark System (Pencil)
+        function setMark(id) {
+            const btn = document.querySelector(`[data-id="${id}"] .pencil-btn`);
+            btn.classList.add('active');
+            saveToStorage(id, true);
         }
 
-        // Load saved marks on startup
-        window.addEventListener('DOMContentLoaded', () => {
-            let marks = JSON.parse(localStorage.getItem('adhiraj_marks')) || {};
-            for (let id in marks) {
-                const el = document.querySelector(`[data-id="${id}"] .bookmark-btn`);
-                if (el) el.classList.add('active');
+        function clearMark(id) {
+            const btn = document.querySelector(`[data-id="${id}"] .pencil-btn`);
+            btn.classList.remove('active');
+            saveToStorage(id, false);
+            event.stopPropagation(); // बटन क्लिक गर्दा कथा नखुलोस् भनेर
+        }
+
+        function saveToStorage(id, state) {
+            let marks = JSON.parse(localStorage.getItem('ad068_marks')) || {};
+            if(state) marks[id] = true;
+            else delete marks[id];
+            localStorage.setItem('ad068_marks', JSON.stringify(marks));
+        }
+
+        function loadSavedMarks() {
+            let marks = JSON.parse(localStorage.getItem('ad068_marks')) || {};
+            for(let id in marks) {
+                const btn = document.querySelector(`[data-id="${id}"] .pencil-btn`);
+                if(btn) btn.classList.add('active');
             }
-        });
+        }
     </script>
 </body>
 </html>
